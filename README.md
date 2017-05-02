@@ -1,4 +1,4 @@
-# ch-node-bridge
+# blogging-plateform
 
 
 ## Setup
