@@ -1,17 +1,26 @@
 
 const express = require("express"),
-  getParaServiceInstance = require("./PostService"),
+  getPostServiceInstance = require("./PostService"),
+  getParaServiceInstance = require("../paragraphs/ParaService"),
   getGenericRepoIns = require("../../mongodb/GenericRepository");
 
 let {NODE_ENV} = process.env,
   nodeEnv = NODE_ENV || "local",
   config = Object.freeze(require("../../../config/" + nodeEnv)),
   dbService = getGenericRepoIns(config),
-  postServiceIns = getParaServiceInstance(dbService),
+  paraServiceIns = getParaServiceInstance(dbService),
+  postServiceIns = getPostServiceInstance(dbService, paraServiceIns),
   router = express.Router(),
-  rootPostRoute = router.route("/");
+  rootPostsRoute = router.route("/"),
+  readFullBlogRoute = router.route("/:id");
 
-rootPostRoute
+rootPostsRoute
   .post(postServiceIns.createPost.bind(postServiceIns));
+
+rootPostsRoute
+  .get(postServiceIns.retrievePostLists.bind(postServiceIns));
+
+readFullBlogRoute
+  .get(postServiceIns.retrieveFullPostDetails.bind(postServiceIns));
 
 module.exports = router;

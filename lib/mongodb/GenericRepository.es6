@@ -121,10 +121,17 @@ class GenericRepository {
    * @returns {Q.Promise} returns promise for insertion
    */
 
-  insert({collection, document}) {
+  insertOne({collection, document}) {
     return this.getMongoDBObject()
       .then(db => {
-        return Q.ninvoke(db.collection(collection), "insert", document);
+        return Q.ninvoke(db.collection(collection), "insertOne", document);
+      });
+  }
+
+  insert({collection, documents}) {
+    return this.getMongoDBObject()
+      .then(db => {
+        return Q.ninvoke(db.collection(collection), "insert", documents);
       });
   }
 
