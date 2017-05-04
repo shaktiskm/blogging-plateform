@@ -65,13 +65,25 @@ class PostService {
               "_id": {
                 "$in": paragraphs
               }
+            },
+            "fields": {
+              "postID": 0
             }
           };
 
         this._paraService.retrieveParaDetails(queryPara)
           .then(data => {
-            console.log("calculated full post details ---> ", data);
-            res.send(data);
+
+            let fullPostDoc = {
+              "id": docArr[0]._id,
+              "title": docArr[0].title,
+              "paragraphs": data
+            };
+
+            console.log("docArr ---> ", docArr);
+            console.log("calculated full post details ---> ", fullPostDoc);
+
+            res.send(fullPostDoc);
           })
           .catch(err => {
             next(err);
@@ -112,7 +124,8 @@ class PostService {
                 }
               },
               "fields": {
-                "comments": 0
+                "comments": 0,
+                "postID": 0
               }
             };
 
@@ -127,8 +140,6 @@ class PostService {
         return postDocs;
       })
       .then(postDocs => {
-        console.log("postdocs promise-------------", postDocs);
-
         Q.all(postDocs)
           .then(result => {
             console.log("retrievePostLists()//success ---->", result);

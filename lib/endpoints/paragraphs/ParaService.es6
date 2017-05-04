@@ -31,6 +31,7 @@ class ParaService {
       paraId = req.params.id;
 
     document._id = this._uuidService.createUniqueId();
+    document.createdDate = new Date();
 
     Q.all([
       this._dbService.insertOne({collection, document}),
@@ -144,6 +145,9 @@ class ParaService {
           "_id": {
             "$in": comments
           }
+        },
+        "sort": {
+          "createdDate": 1
         }
       };
 
