@@ -8,22 +8,6 @@ class ParaService {
     this._dbService = dbService;
     this._uuidService = uuidService;
   }
-  createPara(req, res, next) {
-
-    const collection = "paragraphs",
-      document = req.body;
-
-    this._dbService
-      .insertOne({collection, document})
-      .then(success => {
-        console.log("Para Created", success.result);
-        res.send({"msg": "success"});
-      })
-      .catch(err => {
-        console.log("createPara()//Error while creating para...", err);
-        next(err);
-      });
-  }
 
   createComments(req, res, next) {
     const collection = "comments",
@@ -37,9 +21,8 @@ class ParaService {
       this._dbService.insertOne({collection, document}),
       this.updateParaComments(paraId, document._id)
     ])
-      .then(success => {
-        console.log("Comment Created", success.result);
-        res.send({"msg": "success"});
+      .then(() => {
+        res.send({"status": "success"});
       })
       .catch(err => {
         console.log("createComments()//Error while creating comments...", err);
@@ -64,9 +47,6 @@ class ParaService {
   }
 
   createParagraphs(postId, paraArray) {
-
-    console.log("in createParagraphs");
-
     let collection = "paragraphs",
       documents = [],
       paraIds = [];
@@ -86,8 +66,8 @@ class ParaService {
 
     return this._dbService
       .insert({collection, documents})
-      .then(success => {
-        console.log("createParagraphs()// success -->", success.result);
+      .then(() => {
+        console.log("createParagraphs()// success -->");
         return paraIds;
       });
   }
@@ -102,11 +82,8 @@ class ParaService {
         if (!isFull) {
           return paraDocs;
         }
-        console.log("paradocs------>", paraDocs);
-
         let resultDocs = paraDocs;
 
-        console.log("inside arr----------");
         resultDocs = paraDocs.map(para => {
           let paraDtl = para,
             defer = Q.defer();
@@ -123,12 +100,9 @@ class ParaService {
             });
           return defer.promise;
         });
-
-
         return resultDocs;
       })
       .then(resultDocs => {
-        console.log("retrieveParaDetails()//proise--------------", resultDocs);
         return Q.all(resultDocs)
           .then(res => {
             console.log("retrieveParaDetails()//--------------", res);
@@ -150,8 +124,6 @@ class ParaService {
           "createdDate": 1
         }
       };
-
-    console.log("comments-----------", comments);
 
     return this.retrieveComments(query);
   }

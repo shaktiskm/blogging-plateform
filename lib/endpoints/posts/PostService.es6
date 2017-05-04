@@ -10,7 +10,6 @@ class PostService {
     this._paraService = paraService;
   }
   createPost(req, res, next) {
-
     const collection = "posts",
       document = {
         "_id": "",
@@ -80,9 +79,6 @@ class PostService {
               "paragraphs": data
             };
 
-            console.log("docArr ---> ", docArr);
-            console.log("calculated full post details ---> ", fullPostDoc);
-
             res.send(fullPostDoc);
           })
           .catch(err => {
@@ -142,7 +138,7 @@ class PostService {
       .then(postDocs => {
         Q.all(postDocs)
           .then(result => {
-            console.log("retrievePostLists()//success ---->", result);
+            console.log("retrievePostLists()//success ---->");
             res.send(result);
           });
       })

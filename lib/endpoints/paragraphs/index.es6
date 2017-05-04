@@ -12,11 +12,7 @@ let {NODE_ENV} = process.env,
   uuidService = getUniqueIdServiceInstance(uuid),
   paraServiceIns = getParaServiceInstance(dbService, uuidService),
   router = express.Router(),
-  rootParaRoute = router.route("/"),
   paraCommentRoute = router.route("/:id/comments");
-
-rootParaRoute
-  .post(paraServiceIns.createPara.bind(paraServiceIns));
 
 paraCommentRoute
   .post(paraServiceIns.createComments.bind(paraServiceIns));
