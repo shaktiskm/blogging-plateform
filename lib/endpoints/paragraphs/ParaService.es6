@@ -94,7 +94,6 @@ class ParaService {
 
           this.getComments(para)
             .then(commentDtl => {
-              paraDtl.comments = [];
               paraDtl.comments = commentDtl;
               defer.resolve(paraDtl);
             });
@@ -102,13 +101,7 @@ class ParaService {
         });
         return resultDocs;
       })
-      .then(resultDocs => {
-        return Q.all(resultDocs)
-          .then(res => {
-            console.log("retrieveParaDetails()//--------------", res);
-            return res;
-          });
-      });
+      .then(resultDocs => Q.all(resultDocs));
   }
 
   getComments(paraDoc) {

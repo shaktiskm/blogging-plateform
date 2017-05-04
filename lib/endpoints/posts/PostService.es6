@@ -127,7 +127,6 @@ class PostService {
 
           this._paraService.retrieveParaDetails(queryPara, false)
             .then(result => {
-              postDtl.paragraphs = [];
               postDtl.paragraphs = result;
               defer.resolve(postDtl);
             });
